@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>ChatBox</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        var name = prompt("Please enter your name");
+    </script>
+</head>
+
+<body>
+    <div id="intro">
+        <h1>WeChat</h1>
+    </div>
+    <ul id="messages"></ul>
+    <form action="">
+        <input id="m" placeholder="Enter your message" autocomplete="off" required /><button>Send</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        var socket = io();
+        var date=new Date()
+        var times=date.getHours()+ " : " + date.getMinutes()
+        socket.emit('joining msg', name);
+        $('form').submit(function (e) {
+            e.preventDefault(); 
+            socket.emit('chat message', (name + ' : ' + $('#m').val()));
+            $('#messages').append($('<li id="list">').text('You:  ' + $('#m').val()+ " [ "+ times + " ] "));
+            $('#m').val('');
+            return false;
+        });
+        socket.on('chat message', function (msg,time) {
+            $('#messages').append($('<li>').text(msg+ '[' + times + ']' ));
+        });
+    </script>
+</body>
+
+</html>
