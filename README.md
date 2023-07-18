@@ -1,2 +1,2 @@
 # gossiper
-This is a simple chat application.
+This is a real time chat application using socket.io
